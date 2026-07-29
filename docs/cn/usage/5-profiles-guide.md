@@ -1,5 +1,12 @@
 # 5. 多实例配置（Profile 系统）
 
+> **📚 学习目标**
+> 阅读本文后，你将能够：
+> - 理解Profile系统的隔离机制和实现原理
+> - 熟练使用Profile管理命令创建、切换、删除Profile
+> - 能够根据使用场景设计合理的Profile隔离方案
+> - 掌握Profile的备份和迁移方法
+
 Hermes Agent 支持多 Profile（多实例）功能，每个 Profile 是完全独立的运行环境，拥有自己的配置、凭据、会话数据、技能和工具设置，满足多场景、多环境、多用户的使用需求。
 
 ## 概述
@@ -150,19 +157,38 @@ hermes -p project-ai-assistant
 ```
 所有和该项目相关的对话、文档、代码都会保存在独立的目录下，不会和其他项目混淆。
 
-## 常见问题
+---
 
-**Q：Profile 数据存储在哪里？**
+## ✍️ 练习
+1. 创建两个Profile：`work` 和 `personal`，分别配置不同的默认模型和皮肤
+2. 练习使用`-p`参数切换Profile运行，验证配置确实隔离
+3. 切换默认Profile为`work`，验证不需要加`-p`参数默认使用该Profile
+4. 备份你的默认Profile，验证可以正常恢复
+
+---
+
+## ❓ 常见问题
+### Q：Profile 数据存储在哪里？
 A：默认 Profile 存储在 `~/.hermes/`，自定义 Profile 存储在 `~/.hermes/profiles/[profile名称]/`。
 
-**Q：可以在不同 Profile 之间共享数据吗？**
-A：默认完全隔离，不支持直接共享，如果需要共享可以手动复制对应目录下的文件。
+### Q：可以在不同 Profile 之间共享数据吗？
+A：默认完全隔离，不支持直接共享，如果需要共享可以手动复制对应目录下的文件（比如技能目录、配置文件）。
 
-**Q：删除 Profile 会影响其他 Profile 吗？**
-A：不会，每个 Profile 是独立的目录，删除操作只会删除对应 Profile 的数据。
+### Q：删除 Profile 会影响其他 Profile 吗？
+A：不会，每个 Profile 是独立的目录，删除操作只会删除对应 Profile 的数据，不会影响其他Profile。
 
-**Q：最多支持多少个 Profile？**
+### Q：最多支持多少个 Profile？
 A：没有数量限制，可以根据需要创建任意多个 Profile。
 
-**Q：如何备份 Profile？**
+### Q：如何备份 Profile？
 A：直接备份对应的 Profile 目录即可，恢复时将备份的目录放到 `~/.hermes/profiles/` 下即可使用。
+
+### Q：可以给不同Profile配置不同的系统资源限制吗？
+A：可以，在对应Profile的配置文件中设置`max_tokens`、`execution_timeout`等参数即可实现资源隔离。
+
+---
+
+## 📖 导航
+- 上一篇：[技能使用指南](./4-skills-guide.md)
+- 下一篇：[常见问题解答](./6-faq.md)
+- [返回目录](../SUMMARY.md)

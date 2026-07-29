@@ -1,16 +1,26 @@
 # 4. 基础配置
 
+> **📚 学习目标**
+> 阅读本文后，你将能够：
+> - 理解 Hermes Agent 的配置文件结构和核心配置项
+> - 掌握 3 种修改配置的方式
+> - 学会使用多配置集（Profile）功能隔离不同使用场景
+
+
+
 ## 配置文件位置
 
 主配置文件位于：
 ```
 ~/.hermes/config.yaml
 ```
+> 存放所有非敏感配置项，修改后需要重启生效。
 
 环境变量（API 密钥等敏感信息）位于：
 ```
 ~/.hermes/.env
 ```
+> 存放所有敏感信息，不会被同步或者导出，确保密钥安全。
 
 ## 核心配置项
 
@@ -90,6 +100,14 @@ BROWSERBASE_API_KEY=your_browserbase_api_key
 FIRECRAWL_API_KEY=your_firecrawl_api_key
 ```
 
+## 配置优先级
+配置按以下优先级生效（高优先级覆盖低优先级）：
+1. 临时环境变量（当前终端会话生效）
+2. CLI 运行参数（`-m`、`--profile`等）
+3. `/set` 命令动态修改的配置（立即生效）
+4. `config.yaml` 和 `.env` 文件配置
+5. 系统默认配置
+
 ## 修改配置的方式
 
 ### 方式一：直接编辑配置文件
@@ -101,6 +119,12 @@ FIRECRAWL_API_KEY=your_firecrawl_api_key
 /set display.skin ares
 ```
 修改会自动保存到配置文件，立即生效。
+
+查看当前配置值可以使用 `/get` 命令：
+```
+/get display.skin
+/get model.temperature
+```
 
 ### 方式三：重新运行配置向导
 ```bash
@@ -130,3 +154,29 @@ hermes profile create personal
 ```bash
 hermes profile delete old
 ```
+
+---
+
+## ✍️ 练习
+1. 尝试使用 `/set` 命令修改提示符为 `🦊 `，确认修改立即生效
+2. 创建一个名为 `test` 的 Profile，验证配置是否完全隔离
+3. 修改背景进程通知级别为 `error`，仅在后台进程出错时才收到通知
+
+---
+
+## ❓ 常见问题
+### Q：修改配置后需要重启吗？
+A：通过 `/set` 命令修改的配置会立即生效，直接编辑配置文件的话需要重启 CLI 才能生效。
+
+### Q：配置文件可以同步到其他设备吗？
+A：可以同步 `config.yaml` 文件，但是不要同步 `.env` 文件，避免泄露 API 密钥。
+
+### Q：如何恢复默认配置？
+A：可以删除 `~/.hermes/config.yaml` 文件，重启后会自动生成默认配置，或者运行 `hermes setup reset` 重置所有配置。
+
+---
+
+## 📖 导航
+- 上一篇：[首次运行](./3-first-run.md)
+- 下一篇：[CLI 使用指南](../usage/1-cli-guide.md)
+- [返回目录](../SUMMARY.md)
